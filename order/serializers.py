@@ -1,6 +1,6 @@
-from os import read
-from pyexpat import model
 from rest_framework import serializers
+
+from store.serializers import ProductVariationSerializer
 from .models import Order, OrderItems
 
 
@@ -9,10 +9,24 @@ class OrderItemsSerializer(serializers.ModelSerializer):
     product_id = serializers.SerializerMethodField()
     image = serializers.SerializerMethodField()
     description = serializers.SerializerMethodField()
+    product_variation = ProductVariationSerializer()
 
     class Meta:
-        model = OrderItems
-        fields = ["id", "order", "product", "status", "quantity", "unit_price", "sub_total", "confirmed", "image", "description", "product_id"]
+        model = OrderItems  # noqa: F811
+        fields = [
+            "id",
+            "order",
+            "product",
+            "status",
+            "quantity",
+            "unit_price",
+            "sub_total",
+            "confirmed",
+            "image",
+            "description",
+            "product_id",
+            "product_variation",
+        ]
 
     def get_product(self, obj):
         return obj.product.name
@@ -34,7 +48,20 @@ class OrderSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Order
-        fields = ["id", "user", "city", "state", "address", "buy_cash", "recive_by_deliver", "email", "order_items", "phone", "order_code", "smtp_code"]
+        fields = [
+            "id",
+            "user",
+            "city",
+            "state",
+            "address",
+            "buy_cash",
+            "recive_by_deliver",
+            "email",
+            "order_items",
+            "phone",
+            "order_code",
+            "smtp_code",
+        ]
 
 
 class OrdersHistorySerializers(serializers.ModelSerializer):
@@ -43,4 +70,3 @@ class OrdersHistorySerializers(serializers.ModelSerializer):
     class Meta:
         model = Order
         fields = ["id", "user", "buy_cash", "recive_by_deliver", "order_items", "order_code", "created_at"]
-

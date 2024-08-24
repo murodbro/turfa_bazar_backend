@@ -1,5 +1,6 @@
-from operator import truediv
 from rest_framework import serializers
+
+from store.serializers import ProductVariationSerializer
 
 from .models import CartItem
 
@@ -8,12 +9,22 @@ class CartItemSerializer(serializers.ModelSerializer):
     product = serializers.SerializerMethodField()
     product_id = serializers.SerializerMethodField()
     image = serializers.SerializerMethodField()
-    stock = serializers.SerializerMethodField()
-    price = serializers.SerializerMethodField()
+    base_price = serializers.SerializerMethodField()
+    product_variation = ProductVariationSerializer()
 
     class Meta:
         model = CartItem
-        fields = ["id", "user", "product", "quantity", "sub_total", "image", "stock", "price", "product_id"]
+        fields = [
+            "id",
+            "user",
+            "product",
+            "quantity",
+            "sub_total",
+            "image",
+            "base_price",
+            "product_id",
+            "product_variation",
+        ]
 
     def get_product(self, obj):
         return obj.product.name
@@ -24,8 +35,8 @@ class CartItemSerializer(serializers.ModelSerializer):
     def get_stock(self, obj):
         return obj.product.stock
 
-    def get_price(self, obj):
-        return obj.product.price
+    def get_base_price(self, obj):
+        return obj.product.base_price
 
     def get_image(self, obj):
         request = self.context.get("request")

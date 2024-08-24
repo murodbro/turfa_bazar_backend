@@ -1,11 +1,10 @@
-from dataclasses import fields
 from rest_framework import serializers
 
 from category.serializers import ProductCategorySerializer, SubProductCategorySerializer
 from user.serializers import UserProfileSerializer
 
 from .models import Product, ProductGallery
-from store.models import ProductReview, ProductVariation
+from store.models import ProductReview, ProductVariation, VariationValue, VariationType
 
 
 class ProductGallerySerializer(serializers.ModelSerializer):
@@ -21,22 +20,50 @@ class ProductSerializers(serializers.ModelSerializer):
 
     class Meta:
         model = Product
-        fields = ["id", "name", "description", "image", "category", "subcategory", "gallery"]
+        fields = ["id", "name", "description", "image", "category", "subcategory", "gallery", "base_price"]
 
 
-class VariationSerializer(serializers.ModelSerializer):
+class VariationValueSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = VariationValue
+        fields = ["id", "type", "value"]
+
+
+class VariationTypeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = VariationType
+        fields = ["id", "name"]
+
+
+class ProductVariationSerializer(serializers.ModelSerializer):
+    variation_values = VariationValueSerializer(many=True)
+
     class Meta:
         model = ProductVariation
-        fields = ["id", "name", "variation", "price"]
+        fields = ["id", "product", "variation_values", "price", "stock"]
 
 
 class ProductDetailSerializers(serializers.ModelSerializer):
     gallery = ProductGallerySerializer(many=True)
-    variation = VariationSerializer(many=True, read_only=True)
+    variations = ProductVariationSerializer(many=True, read_only=True)
+    variation_types = VariationTypeSerializer(many=True)
 
     class Meta:
         model = Product
-        fields = ["id", "name", "description", "image", "is_available", "stock", "details", "gallery", "ordered_count", "variation", "owner"]
+        fields = [
+            "id",
+            "name",
+            "description",
+            "image",
+            "is_available",
+            "details",
+            "gallery",
+            "ordered_count",
+            "variations",
+            "owner",
+            "variation_types",
+            "base_price",
+        ]
 
 
 class ReviewSerializer(serializers.ModelSerializer):

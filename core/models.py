@@ -7,7 +7,7 @@ class Model(models.Model):
         primary_key=True,
         default=uuid.uuid4,
         editable=False,
-        max_length=30,
+        max_length=36,
     )
 
     created_at = models.DateTimeField(auto_now_add=True)
