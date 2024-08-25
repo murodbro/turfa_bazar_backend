@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Activate the virtual environment
+source /path/to/your/venv/bin/activate
+
 # Install Python dependencies
 pip install -r requirements.txt
 
