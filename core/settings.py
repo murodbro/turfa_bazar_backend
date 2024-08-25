@@ -1,3 +1,5 @@
+import os
+import dj_database_url
 from datetime import timedelta
 from pathlib import Path
 
@@ -66,15 +68,22 @@ TEMPLATES = [
 WSGI_APPLICATION = "core.wsgi.application"
 
 
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.postgresql",
+#         "NAME": "Bazar",
+#         "USER": "postgres",
+#         "PASSWORD": "571632",
+#         "HOST": "localhost",
+#         "PORT": "5432",
+#     }
+# }
+
+
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": "Bazar",
-        "USER": "postgres",
-        "PASSWORD": "571632",
-        "HOST": "localhost",
-        "PORT": "5432",
-    }
+    "default": dj_database_url.config(
+        default=os.getenv("DATABASE_URL", "postgres://postgres:571632@localhost:5432/Bazar")
+    )
 }
 
 
