@@ -8,17 +8,17 @@ from rest_framework_simplejwt.views import (
 )
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', include('store.urls')),
-    path('cart/', include('cart.urls')),
-    path('user/', include('user.urls')),
-    path('category_items/', include('category.urls')),
-    path('checkout/', include('order.urls')),
+    path("secure_login/", admin.site.urls),
+    path("", include("store.urls")),
+    path("cart/", include("cart.urls")),
+    path("user/", include("user.urls")),
+    path("category_items/", include("category.urls")),
+    path("checkout/", include("order.urls")),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 urlpatterns += [
-    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path("api/token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
+    path("api/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
 ]
