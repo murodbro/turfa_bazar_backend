@@ -79,10 +79,15 @@ WSGI_APPLICATION = "core.wsgi.application"
 #     }
 # }
 
+# name: turfa-bazar-backend-postgres
+
 
 DATABASES = {
     "default": dj_database_url.config(
-        default=os.getenv("DATABASE_URL", "postgres://postgres:571632@localhost:5432/Bazar")
+        default=os.getenv(
+            "DATABASE_URL",
+            "postgres://default:Ms5UZ0DTlNpi@ep-royal-pine-a41cm7g7.us-east-1.aws.neon.tech:5432/verceldb?sslmode=require",
+        )
     )
 }
 
